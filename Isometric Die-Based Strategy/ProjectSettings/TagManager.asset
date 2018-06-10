@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - BattleUI
+  - Die
+  - Floor
+  - Map
+  - Enemy
+  - Ally
+  - Card
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - DiceUI
+  - Background
+  - TileLayer
+  - MouseInput
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Tile
+    uniqueID: 2343440981
+    locked: 0
+  - name: PanelUI
+    uniqueID: 1339111951
+    locked: 0
+  - name: DieUI
+    uniqueID: 2973121663
+    locked: 0
+  - name: GameUI
+    uniqueID: 590406725
+    locked: 0
