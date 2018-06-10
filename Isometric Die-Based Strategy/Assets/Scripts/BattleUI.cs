@@ -54,10 +54,6 @@ public class BattleUI : MonoBehaviour
         {
             redDie.Push(redDieObjects[i].gameObject);
         }
-        leftPanel.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Screen.width / 2);
-        leftPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(-Screen.width / 2, leftPanel.transform.position.y);
-        rightPanel.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Screen.width / 2);
-        rightPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(Screen.width / 2, rightPanel.transform.position.y);
     }
 
     public void SetBattle(CharacterMovement attacker, CharacterMovement defender, bool isAttacking)
@@ -125,29 +121,50 @@ public class BattleUI : MonoBehaviour
         }
     }
 
+    public void resetCards()
+    {
+        for (int i = 0; i < cards.Length; ++i)
+        {
+            cards[i].SetActive(false);
+        }
+    }
+
     public void moveCards(Card card, bool zoomIn)
     {
-        int direction = 0;
         Card c;
         if (zoomIn)
         {
-            direction = 1;
+            for (int i = 0; i < activeCards.Count; ++i)
+            {
+                if (i == card.place)
+                {
+                    continue;
+                }
+                c = activeCards[i].GetComponent<Card>();
+                if (i < card.place)
+                {
+                    StartCoroutine(c.move(c.defaultPosition.x - 35.0f,
+                       c.defaultPosition.y, c.defaultRotation));
+                }
+                else if (i > card.place)
+                {
+                    StartCoroutine(c.move(c.defaultPosition.x + 35.0f,
+                       c.defaultPosition.y, c.defaultRotation));
+                }
+            }
         }
         else
         {
-            direction = -1;
-        }
-        if (card.place > 0)
-        {
-            RectTransform rect = activeCards[card.place - 1].GetComponent<RectTransform>();
-            StartCoroutine(activeCards[card.place - 1].GetComponent<Card>().move(rect.anchoredPosition.x - 35.0f * direction, 
-                rect.anchoredPosition.y, activeCards[card.place - 1].transform.localRotation));
-        }
-        if (card.place + 1 < activeCards.Count)
-        {
-            RectTransform rect = activeCards[card.place + 1].GetComponent<RectTransform>();
-            StartCoroutine(activeCards[card.place + 1].GetComponent<Card>().move(rect.anchoredPosition.x + 35.0f * direction, 
-                rect.anchoredPosition.y, activeCards[card.place + 1].transform.localRotation));
+            for (int i = 0; i < activeCards.Count; ++i)
+            {
+                if (i == card.place)
+                {
+                    continue;
+                }
+                c = activeCards[i].GetComponent<Card>();
+                StartCoroutine(c.move(c.defaultPosition.x,
+                      c.defaultPosition.y, c.defaultRotation));
+            }
         }
     }
 
@@ -161,8 +178,10 @@ public class BattleUI : MonoBehaviour
         }
         else
         {
-            StartCoroutine(EndPanels(leftPanel, 2.0f, -430f));
-            StartCoroutine(EndPanels(rightPanel, 2.0f, 430f));
+            BattleUIPanel left = leftPanel.GetComponent<BattleUIPanel>();
+            BattleUIPanel right = rightPanel.GetComponent<BattleUIPanel>();
+            StartCoroutine(EndPanels(leftPanel, 2.0f, left.defaultPosition.x));
+            StartCoroutine(EndPanels(rightPanel, 2.0f, right.defaultPosition.x));
         }
     }
 
@@ -191,7 +210,7 @@ public class BattleUI : MonoBehaviour
         float t = 0.0f;
         float x;
         RectTransform p = panel.GetComponent<RectTransform>();
-        while (t < time)
+        while (Mathf.Abs(p.anchoredPosition.x - endPoint) > 0.01f)
         {
             t += Time.deltaTime;
             x = Animations.EaseOutElastic(p.anchoredPosition.x, endPoint, Time.deltaTime * time);
@@ -250,7 +269,7 @@ public class BattleUI : MonoBehaviour
         leftDice.Clear();
         for (int i = 0; i < rightDice.Count; ++i)
         {
-            redDie.Push(leftDice[i]);
+            redDie.Push(rightDice[i]);
             rightDice[i].SetActive(false);
         }
         rightDice.Clear();
@@ -268,6 +287,7 @@ public class BattleUI : MonoBehaviour
     {
         if (isFighting && isThrowing)
         {
+            resetCards();
             Vector3 direction;
             float force;
             direction = position - leftSpawn.transform.position;
@@ -301,7 +321,7 @@ public class BattleUI : MonoBehaviour
             for (int i = 0; i < leftDice.Count; ++i)
             {
                 dieMovement die = leftDice[i].GetComponent<dieMovement>();
-                if (die.isRolling || die.isDisplaying)
+                if (!die.ready)
                 {
                     start = false;
                     break;
@@ -312,16 +332,16 @@ public class BattleUI : MonoBehaviour
                 for (int i = 0; i < rightDice.Count; ++i)
                 {
                     dieMovement die = rightDice[i].GetComponent<dieMovement>();
-                    if (die.isRolling || die.isDisplaying)
+                    if (!die.ready)
                     {
                         start = false;
                         break;
                     }
                 }
             }
-            else
+            if (!start)
             {
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(1.0f);
             }
         }
         Debug.Log("Begin Fighting");

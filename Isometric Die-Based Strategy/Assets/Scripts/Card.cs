@@ -10,8 +10,8 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public Game game;
 
     private RectTransform rect;
-    private Quaternion defaultRotation;
-    private Vector2 defaultPosition;
+    public Quaternion defaultRotation;
+    public Vector2 defaultPosition;
     public int place;
 
     public void Start()
@@ -78,7 +78,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
                 }
                 break;
             case CharacterMovement.charAttacks.flurry:
-                type = dieMovement.dieType.flurry;
+                type = dieMovement.dieType.regular;
                 numDie = 2;
                 for (int i =0; i < 5; ++i)
                 {
@@ -94,7 +94,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         float t = 0.0f;
         float newX;
         float newY;
-        while (Mathf.Abs(rect.anchoredPosition.x - x) > 0.01f || Mathf.Abs(rect.anchoredPosition.y - y) > 0.01f)
+        while (t < 1.5f || Mathf.Abs(rect.anchoredPosition.x - x) > 0.01f || Mathf.Abs(rect.anchoredPosition.y - y) > 0.01f)
         {
             t += Time.deltaTime;
             newX = Animations.EaseOutElastic(rect.anchoredPosition.x, x, t);

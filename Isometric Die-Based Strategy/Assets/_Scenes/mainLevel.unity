@@ -751,6 +751,7 @@ GameObject:
   - component: {fileID: 280253110}
   - component: {fileID: 280253109}
   - component: {fileID: 280253111}
+  - component: {fileID: 280253112}
   m_Layer: 5
   m_Name: RightPanel
   m_TagString: BattleUI
@@ -827,6 +828,19 @@ MonoBehaviour:
   dieWidth: 0.65
   dieHeight: 0.65
   incrementDirection: 1
+--- !u!114 &280253112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 280253107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff21164d48a76540b076a58bf7643aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultPosition: {x: 0, y: 0}
+  direction: 1
 --- !u!1 &292415602 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1253510074499362, guid: 5612d7ad84852a24fb3ac12c3b1a8e39,
@@ -3816,6 +3830,7 @@ GameObject:
   - component: {fileID: 2095603233}
   - component: {fileID: 2095603232}
   - component: {fileID: 2095603230}
+  - component: {fileID: 2095603231}
   m_Layer: 5
   m_Name: LeftPanel
   m_TagString: BattleUI
@@ -3859,6 +3874,19 @@ MonoBehaviour:
   dieWidth: 0.65
   dieHeight: 0.65
   incrementDirection: -1
+--- !u!114 &2095603231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2095603228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff21164d48a76540b076a58bf7643aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultPosition: {x: 0, y: 0}
+  direction: -1
 --- !u!114 &2095603232
 MonoBehaviour:
   m_ObjectHideFlags: 0

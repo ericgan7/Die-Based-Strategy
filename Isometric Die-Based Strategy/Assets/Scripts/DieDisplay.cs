@@ -28,28 +28,51 @@ public class DieDisplay : MonoBehaviour {
         switch (type)
         {
             case dieMovement.dieType.regular:
-            default:
                 switch (value)
                 {
                     case 1: //attack
                     case 2:
                     case 3:
-                        ++attackIndex;
-                        attackDie.Add(new pair(value, die));
-                        return attackPanel.transform.TransformPoint(new Vector3(attackPanel.transform.localPosition.x + incrementDirection * attackIndex % 7 * dieWidth,
-                            attackPanel.transform.localPosition.y + Mathf.Floor(attackIndex / 7) * dieHeight,
-                            0f));
+                        return addAttack(value, die);
                     case 4: //defense
                     case 5:
                     case 6:
-                    default:
-                        ++defenseIndex;
-                        defenseDie.Add(new pair(value, die));
-                        return defensePanel.transform.TransformPoint(new Vector3(defensePanel.transform.localPosition.x + incrementDirection * defenseIndex % 7 * dieWidth,
-                            defensePanel.transform.localPosition.y + Mathf.Floor(defenseIndex / 7) * dieHeight,
-                            0f));
+                        return addDefense(value, die);
                 }
+                break;
+            case dieMovement.dieType.pierce:
+            default:
+                    switch (value) {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        return addAttack(value, die);
+                    case 5:
+                    case 6:
+                        return addDefense(value, die);
+                    }
+                break;
         }
+        return Vector3.zero;
+    }
+
+    Vector3 addAttack(float value, GameObject die)
+    {
+        ++attackIndex;
+        attackDie.Add(new pair(value, die));
+        return attackPanel.transform.TransformPoint(new Vector3(attackPanel.transform.localPosition.x + incrementDirection * attackIndex % 7 * dieWidth,
+            attackPanel.transform.localPosition.y + Mathf.Floor(attackIndex / 7) * dieHeight,
+            0f));
+    }
+
+    Vector3 addDefense(float value, GameObject die)
+    {
+        ++defenseIndex;
+        defenseDie.Add(new pair(value, die));
+        return defensePanel.transform.TransformPoint(new Vector3(defensePanel.transform.localPosition.x + incrementDirection * defenseIndex % 7 * dieWidth,
+            defensePanel.transform.localPosition.y + Mathf.Floor(defenseIndex / 7) * dieHeight,
+            0f));
     }
 
     public void reset()

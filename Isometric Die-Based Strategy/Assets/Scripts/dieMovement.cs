@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class dieMovement : MonoBehaviour {
-    public enum dieType { regular, pierce, flurry };
+    public enum dieType { regular, pierce };
     private Vector3 defaultPosition;
     private Quaternion defaultRotation;
 
@@ -31,6 +31,7 @@ public class dieMovement : MonoBehaviour {
     private Vector3 rotation;
     private Vector3 currentRotation;
     public float speed;
+    public bool ready;
 
     void Start()
     {
@@ -50,6 +51,8 @@ public class dieMovement : MonoBehaviour {
     {
         isRolling = true;
         isDone = false;
+        isDisplaying = false;
+        ready = false;
         dieRB.AddForce(position*force);
         float rx = Random.Range(5, 10);
         float ry = Random.Range(5, 10);
@@ -66,6 +69,7 @@ public class dieMovement : MonoBehaviour {
         isRolling = false;
         dieValue = 0;
         isDisplaying = false;
+        ready = false;
         GetComponent<MeshCollider>().enabled = true;
     }
 	
@@ -84,6 +88,7 @@ public class dieMovement : MonoBehaviour {
             {
                 isDisplaying = false;
                 Debug.Log("done");
+                ready = true;
             }
         }
 	}
@@ -108,7 +113,7 @@ public class dieMovement : MonoBehaviour {
 
     IEnumerator SetValue()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2.0f);
         bool gettingValue = true;
         directions = new Vector3[] { transform.up, -transform.up, transform.right, -transform.right, transform.forward, -transform.forward };
         while (gettingValue)
