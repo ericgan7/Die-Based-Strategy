@@ -97,7 +97,15 @@ public class GameController : MonoBehaviour {
 
     public void OnClickDieDown(GameObject die)
     {
-        game.battleUI.setThrowing();
+        if (die == null)
+        {
+            game.battleUI.setThrowing(false);
+        }
+        else if (die.CompareTag ("Die") && !die.GetComponent<dieMovement>().red)
+        {
+            Debug.Log("blue");
+            game.battleUI.setThrowing(true);
+        }
     }
 
     public void OnClickDieUp(Vector3 position)
@@ -132,7 +140,6 @@ public class GameController : MonoBehaviour {
         currentTurn = 0;
         currentCharacter = allies[0];
         character = currentCharacter.GetComponent<CharacterMovement>();
-        character.SetTurn(true);
     }
 
     public void SetCharacterLocation(GameObject c, Vector3 previous)
@@ -141,9 +148,8 @@ public class GameController : MonoBehaviour {
         characterLocations[game.map.ToTileCoordinates(c.transform.position)] = c;
     }
 
-    void NextTurn()
+    public void NextTurn()
     {
-        character.SetTurn(false);
         currentTurn = (currentTurn + 1) % 2;
         if (currentTurn == 0)
         {
@@ -156,6 +162,5 @@ public class GameController : MonoBehaviour {
             currentCharacter = enemies[enemyTurn];
         }
         character = currentCharacter.GetComponent<CharacterMovement>();
-        character.SetTurn(true);
     }
 }

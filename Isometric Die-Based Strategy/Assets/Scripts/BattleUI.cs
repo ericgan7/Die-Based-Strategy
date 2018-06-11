@@ -33,7 +33,7 @@ public class BattleUI : MonoBehaviour
     public float cardDrop;
 
     public bool isThrowing;
-    private bool isFighting;
+    public bool isFighting;
     public bool rolled;
     private bool isLeftAttacker;
 
@@ -58,43 +58,19 @@ public class BattleUI : MonoBehaviour
 
     public void SetBattle(CharacterMovement attacker, CharacterMovement defender, bool isAttacking)
     {
-        if (isFighting)
+        isLeftAttacker = isAttacking;
+        if (isAttacking)
         {
-            for (int i = 0; i < leftDice.Count; ++i)
-            {
-                leftDice[i].SetActive(false);
-                blueDie.Push(leftDice[i]);
-            }
-            for (int i = 0; i < rightDice.Count; ++i)
-            {
-                rightDice[i].SetActive(false);
-                redDie.Push(rightDice[i]);
-            }
-            for (int i = 0; i < activeCards.Count; ++i)
-            {
-                activeCards[i].SetActive(false);
-            }
-            leftDice = new List<GameObject>();
-            rightDice = new List<GameObject>();
-            activeCards = new List<GameObject>();
-            rolled = false;
-            SetUI(false);
+            playerChar = attacker;
+            oppChar = defender;
         }
         else
         {
-            isLeftAttacker = isAttacking;
-            if (isAttacking) {
-                playerChar = attacker;
-                oppChar = defender;    
-            }
-            else
-            {
-                playerChar = defender;
-                oppChar = attacker;
-            }
-            SetUI(true);
+            playerChar = defender;
+            oppChar = attacker;
         }
-        isFighting = !isFighting;
+        SetUI(true);
+        isFighting = true;
     }
 
     public void setCards()
@@ -117,16 +93,50 @@ public class BattleUI : MonoBehaviour
         }
         else
         {
-
+            int start = -playerChar.attackMoves.Length / 2;
+            for (int i = 0; i < playerChar.defenseMoves.Length; ++i)
+            {
+                float startX = 0.0f;
+                float startY = 365.0f;
+                activeCards.Add(cards[i]);
+                cards[i].SetActive(true);
+                cards[i].GetComponent<RectTransform>().anchoredPosition = (new Vector2(startX + (start + i) * cardSpacing, startY + -Mathf.Abs(start + i) * cardDrop));
+                cards[i].transform.localRotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, -(start + i) * cardCurve));
+                Card c = cards[i].GetComponent<Card>();
+                c.setType(playerChar.defenseMoves[i]);
+                c.setPosition(i);
+            }
         }
     }
 
     public void resetCards()
     {
-        for (int i = 0; i < cards.Length; ++i)
+        for (int i = 0; i < activeCards.Count; ++i)
         {
-            cards[i].SetActive(false);
+            activeCards[i].SetActive(false);
         }
+        activeCards.Clear();
+    }
+
+    public void reset()
+    {
+        for (int i = 0; i < leftDice.Count; ++i)
+        {
+            leftDice[i].SetActive(false);
+            leftDice[i].GetComponent<dieMovement>().reset();
+            blueDie.Push(leftDice[i]);
+        }
+        for (int i = 0; i < rightDice.Count; ++i)
+        {
+            rightDice[i].SetActive(false);
+            rightDice[i].GetComponent<dieMovement>().reset();
+            redDie.Push(rightDice[i]);
+        }
+        leftDice.Clear();
+        rightDice.Clear();
+        resetCards();
+        isFighting = false;
+        rolled = false;
     }
 
     public void moveCards(Card card, bool zoomIn)
@@ -223,7 +233,6 @@ public class BattleUI : MonoBehaviour
     {
         if (isFighting)
         {
-            Debug.Log("set die");
             int left = 0;
             int right = 0;
             if (isLeftAttacker)
@@ -236,7 +245,6 @@ public class BattleUI : MonoBehaviour
                 left = num + playerChar.defense;
                 right = oppChar.attack;
             }
-            Debug.Log(new Vector2(left, right));
             for (int i = 0; i < left; ++i)
             {
                 leftDice.Add(blueDie.Pop());
@@ -245,8 +253,6 @@ public class BattleUI : MonoBehaviour
                 leftDice[i].transform.localPosition = new Vector3(Mathf.Floor(i / 2) * 0.55f, (i % 2) * 0.55f, 0.0f);
                 leftDice[i].SetActive(true);
             }
-
-
             for (int i = 0; i < right; ++i)
             {
                 rightDice.Add(redDie.Pop());
@@ -255,7 +261,6 @@ public class BattleUI : MonoBehaviour
                 rightDice[i].transform.localPosition = new Vector3(Mathf.Floor(i / 2) * 0.55f, (i % 2) * 0.55f, 0.0f);
                 rightDice[i].SetActive(true);
             }
-            //disable cards
         }
     }
 
@@ -275,11 +280,11 @@ public class BattleUI : MonoBehaviour
         rightDice.Clear();
     }
 
-    public void setThrowing()
+    public void setThrowing(bool t)
     {
         if (!rolled)
         {
-            isThrowing = true;
+            isThrowing = t;
         }
     }
 
@@ -309,7 +314,6 @@ public class BattleUI : MonoBehaviour
     public IEnumerator Fight()
     {
         bool start = false; ;
-        Debug.Log("rolling Dice before fight");
         int t = 0;
         while (!start) {    //check and ensure all dice are finished rolling
             start = true;
@@ -344,13 +348,12 @@ public class BattleUI : MonoBehaviour
                 yield return new WaitForSeconds(1.0f);
             }
         }
-        Debug.Log("Begin Fighting");
-        StartCoroutine(Attack(isLeftAttacker));
+        StartCoroutine(Attack());
     }
 
-    public IEnumerator Attack(bool isLeft)
+    public IEnumerator Attack()
     {
-        if (isLeft)
+        if (isLeftAttacker)
         {
             while (game.leftUI.attackIndex >= 0)
             {
@@ -382,9 +385,37 @@ public class BattleUI : MonoBehaviour
         }
         else
         {
-
+            while (game.rightUI.attackIndex >= 0)
+            {
+                game.rightUI.removeDie(true);
+                if (game.leftUI.defenseIndex < 0)
+                {
+                    --playerChar.health;
+                }
+                else
+                {
+                    game.leftUI.removeDie(false);
+                }
+                yield return new WaitForSeconds(0.5f);
+            }
+            yield return new WaitForSeconds(1.0f);
+            while (game.leftUI.attackIndex >= 0)
+            {
+                game.leftUI.removeDie(true);
+                if (game.rightUI.defenseIndex < 0)
+                {
+                    --oppChar.health;
+                }
+                else
+                {
+                    game.rightUI.removeDie(false);
+                }
+                yield return new WaitForSeconds(0.5f);
+            }
         }
         game.gameController.EndBattle();
         SetUI(false);
+        reset();
+        game.gameController.NextTurn();
     }
 }

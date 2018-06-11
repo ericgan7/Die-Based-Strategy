@@ -144,12 +144,10 @@ public class dieMovement : MonoBehaviour {
         }
         if (red)
         {
-            Debug.Log("red" + dieValue);
             destination = game.rightUI.addDie(gameObject, dieValue, type);
         }
         else
         {
-            Debug.Log("blue" + dieValue);
             destination = game.leftUI.addDie(gameObject, dieValue, type);
         }
         fixRotation();
@@ -159,7 +157,6 @@ public class dieMovement : MonoBehaviour {
 
     void fixRotation()
     {
-        Debug.Log("fixRotation");
         switch (dieValue)
         {
             case 1:

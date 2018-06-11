@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
     public float cameraSpeed;
     public GameObject mainCamera;
 
+    public bool test;
     void Awake()
     {
         width = Screen.width;
@@ -68,10 +69,19 @@ public class PlayerController : MonoBehaviour {
                 int mask = 1 << 8;
                 if (Physics.Raycast(cameraRay, out hit, 100.0f, mask))
                 {
+                    Debug.Log(hit.transform.tag);
                     if (hit.transform.tag == "Die")
                     {
                         game.gameController.OnClickDieDown(hit.transform.gameObject);
                     }
+                    else
+                    {
+                        game.gameController.OnClickDieDown(null);
+                    }
+                }
+                else
+                {
+                    game.gameController.OnClickDieDown(null);
                 }
             }
             else if (Input.GetMouseButtonUp(0))
