@@ -9,7 +9,7 @@ public class CharacterMovement: MonoBehaviour {
     public enum charDefenses { normal, deflect};
     public charState state;
     //stats
-    public float speed;
+    public int speed;
     public int attack;
     public int defense;
     public int health;
@@ -18,6 +18,7 @@ public class CharacterMovement: MonoBehaviour {
     public charDefenses[] defenseMoves;
 
     public List<Vector3> destination;
+    private List<GameObject> validTiles;
     public Vector3 previousPos;
     public bool isBattling;
 
@@ -50,7 +51,7 @@ public class CharacterMovement: MonoBehaviour {
                 }
                 else
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, destination[destination.Count - 1], Time.deltaTime * speed);
+                    transform.position = Vector3.MoveTowards(transform.position, destination[destination.Count - 1], Time.deltaTime * 3);
                 }
             }
         }
@@ -65,4 +66,15 @@ public class CharacterMovement: MonoBehaviour {
         destination.Add(new Vector3(d.x, transform.position.y, d.z));
     }
 
+    public void SetValidTiles(List<GameObject> valid)
+    {
+        if (valid == null)
+        {
+            for (int i = 0; i < validTiles.Count; ++i)
+            {
+                validTiles[i].GetComponent<Renderer>().material.color = new Color(255f, 255f, 255f, 0.2f);
+            }
+        }
+        validTiles = valid;
+    }
 }

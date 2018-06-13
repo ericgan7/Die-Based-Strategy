@@ -117,7 +117,7 @@ public class GameController : MonoBehaviour {
         }
         
     }
-    void Awake()
+    void Start()
     {
         GridMovement map = GameObject.FindObjectOfType<GridMovement>();
         int max = Mathf.Max(allies.Length, enemies.Length);
@@ -140,6 +140,7 @@ public class GameController : MonoBehaviour {
         currentTurn = 0;
         currentCharacter = allies[0];
         character = currentCharacter.GetComponent<CharacterMovement>();
+        character.SetValidTiles(GetMovementTiles());
     }
 
     public void SetCharacterLocation(GameObject c, Vector3 previous)
@@ -151,6 +152,7 @@ public class GameController : MonoBehaviour {
     public void NextTurn()
     {
         currentTurn = (currentTurn + 1) % 2;
+        character.SetValidTiles(null);
         if (currentTurn == 0)
         {
             allyTurn = (allyTurn + 1) % allies.Length;
@@ -162,5 +164,34 @@ public class GameController : MonoBehaviour {
             currentCharacter = enemies[enemyTurn];
         }
         character = currentCharacter.GetComponent<CharacterMovement>();
+        character.SetValidTiles(GetMovementTiles());
+    }
+
+    List<GameObject> GetMovementTiles()
+    {
+        Debug.Log(character.speed);
+        List<GameObject> validTiles = new List<GameObject>();
+        int location = game.map.ToTileCoordinates(currentCharacter.transform.position);
+        int index;
+        GameObject tile;
+        for (int x = -character.speed; x <= character.speed; ++x)
+        {
+            for (int y = -character.speed; y <= character.speed; ++y)
+            {
+                if (location%game.map.tileWidth + x >= 0 && location%game.map.tileWidth + x < game.map.tileWidth &&
+                    location/game.map.tileHeight + y >= 0 && location/game.map.tileHeight + y < game.map.tileHeight)
+                {
+                    index = location + x  + tileWidth * y;
+                    Debug.Log(index);
+                    tile = game.map.mapTiles[index];
+                    if (tile && !validTiles.Contains(tile))
+                    {
+                        validTiles.Add(tile);
+                        tile.GetComponent<FloorTile>().ChangeColor(FloorTile.mat.highlight);
+                    }
+                }
+            }
+        }
+        return validTiles;
     }
 }
