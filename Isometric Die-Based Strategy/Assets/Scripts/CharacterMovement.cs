@@ -18,7 +18,7 @@ public class CharacterMovement: MonoBehaviour {
     public charDefenses[] defenseMoves;
 
     public List<Vector3> destination;
-    private List<GameObject> validTiles;
+    private int place;
     public Vector3 previousPos;
     public bool isBattling;
 
@@ -29,6 +29,7 @@ public class CharacterMovement: MonoBehaviour {
         destination = new List<Vector3>();
         previousPos = transform.position;
         state = charState.idle;
+        place = 0;
     }
 
     void FixedUpdate()
@@ -39,19 +40,20 @@ public class CharacterMovement: MonoBehaviour {
             {
                 Debug.Log("Fight");
                 state = charState.attack;
+                place = 0;
                 game.gameController.StartBattle(game.gameController.characterLocations[game.map.ToTileCoordinates(destination[destination.Count - 1])].gameObject, ally);
             }
-            else if (destination.Count > 0)
+            else if (place < destination.Count)
             {
-                if (Vector3.Distance(destination[destination.Count - 1], transform.position) < 0.01f)
+                if (Vector3.Distance(destination[place], transform.position) < 0.01f)
                 {
-                    destination.RemoveAt(destination.Count - 1);
+                    ++place;
                     game.gameController.SetCharacterLocation(gameObject, previousPos);
                     previousPos = transform.position;
                 }
                 else
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, destination[destination.Count - 1], Time.deltaTime * 3);
+                    transform.position = Vector3.MoveTowards(transform.position, destination[place], Time.deltaTime * 3);
                 }
             }
         }
@@ -66,15 +68,5 @@ public class CharacterMovement: MonoBehaviour {
         destination.Add(new Vector3(d.x, transform.position.y, d.z));
     }
 
-    public void SetValidTiles(List<GameObject> valid)
-    {
-        if (valid == null)
-        {
-            for (int i = 0; i < validTiles.Count; ++i)
-            {
-                validTiles[i].GetComponent<Renderer>().material.color = new Color(255f, 255f, 255f, 0.2f);
-            }
-        }
-        validTiles = valid;
-    }
+
 }

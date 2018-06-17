@@ -38,9 +38,13 @@ public class PlayerController : MonoBehaviour {
                     if (hit.transform.tag == "Floor")
                     {
                         destinationTile = hit.transform.gameObject;
-                        game.gameController.SetCharacterPath(destinationTile);
+                        game.gameController.SetPath(destinationTile);
                     }
                 }
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                game.gameController.ClearPath();
             }
             Vector3 mousePos = Input.mousePosition;
             if (mousePos.x / width > 0.9f && mousePos.x / width <= 1.0f)

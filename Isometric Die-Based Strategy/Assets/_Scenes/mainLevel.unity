@@ -2417,6 +2417,9 @@ MonoBehaviour:
   currentTurn: 0
   allyTurn: 0
   enemyTurn: 0
+  validTiles: []
+  currentPath: []
+  lastTile: {fileID: 0}
 --- !u!4 &1028380231
 Transform:
   m_ObjectHideFlags: 0

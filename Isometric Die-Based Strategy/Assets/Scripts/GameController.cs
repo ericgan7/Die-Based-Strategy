@@ -18,17 +18,54 @@ public class GameController : MonoBehaviour {
     public int allyTurn;
     public int enemyTurn;
 
-    public void SetCharacterPath(GameObject destination)
+    private bool canMove;
+    private int speed;
+    public List<GameObject> validTiles;
+    public Stack<GameObject> path;
+    public List<GameObject> currentPath;
+    public GameObject lastTile;
+
+    public void SetPath(GameObject destination)
     {
-        List<GameObject> pathToDestination = Astar(game.map.GetTile(currentCharacter.transform.position), destination);
-        if (pathToDestination.Count > 0)
+        if (canMove)
         {
-            for (int i = 0; i < pathToDestination.Count; ++i)
+            if (destination == lastTile)
             {
-                character.AddDestination(pathToDestination[i].transform.position);
+                canMove = false;
+                for (int i = 0; i < currentPath.Count; ++i)
+                {
+                    character.AddDestination(currentPath[i].transform.position);
+                }
+                character.state = CharacterMovement.charState.move;
             }
-            character.state = CharacterMovement.charState.move;
+            else if (isValidTile(destination))
+            {
+                List<GameObject> pathToDestination = Astar(lastTile, destination);
+                if (pathToDestination.Count > 0)
+                {
+                    lastTile = destination;
+                    for (int i = 0; i < pathToDestination.Count; ++i)
+                    {
+                        path.Push(pathToDestination[i]);
+                        --speed;
+                    }
+                    for (int i = 0; i < pathToDestination.Count; ++i)
+                    {
+                        //path.count would always stop after 2 pops?
+                        currentPath.Add(path.Pop());
+                    }
+                    GetMovementTiles(destination, speed);
+                }
+            }
         }
+    }
+
+    public void ClearPath()
+    {
+        speed = character.speed;
+        currentPath.Clear();
+        GetMovementTiles(currentCharacter, speed);
+        lastTile = game.map.mapTiles[game.map.ToTileCoordinates(character.transform.position)];
     }
 
     List<GameObject> Astar(GameObject start, GameObject end)
@@ -117,6 +154,7 @@ public class GameController : MonoBehaviour {
         }
         
     }
+
     void Start()
     {
         GridMovement map = GameObject.FindObjectOfType<GridMovement>();
@@ -137,10 +175,14 @@ public class GameController : MonoBehaviour {
                 characterLocations[map.ToTileCoordinates(enemies[i].transform.position)] = enemies[i];
             }
         }
+        path = new Stack<GameObject>();
         currentTurn = 0;
         currentCharacter = allies[0];
         character = currentCharacter.GetComponent<CharacterMovement>();
-        character.SetValidTiles(GetMovementTiles());
+        canMove = true;
+        speed = character.speed;
+        GetMovementTiles(currentCharacter, speed);
+        lastTile = game.map.mapTiles[game.map.ToTileCoordinates(character.transform.position)];
     }
 
     public void SetCharacterLocation(GameObject c, Vector3 previous)
@@ -152,7 +194,6 @@ public class GameController : MonoBehaviour {
     public void NextTurn()
     {
         currentTurn = (currentTurn + 1) % 2;
-        character.SetValidTiles(null);
         if (currentTurn == 0)
         {
             allyTurn = (allyTurn + 1) % allies.Length;
@@ -164,27 +205,39 @@ public class GameController : MonoBehaviour {
             currentCharacter = enemies[enemyTurn];
         }
         character = currentCharacter.GetComponent<CharacterMovement>();
-        character.SetValidTiles(GetMovementTiles());
+        validTiles.Clear();
+        currentPath.Clear();
+        lastTile = game.map.mapTiles[game.map.ToTileCoordinates(character.transform.position)];
+        GetMovementTiles(currentCharacter, character.speed);
+        speed = character.speed;
     }
 
-    List<GameObject> GetMovementTiles()
+    void GetMovementTiles(GameObject pos, int speed)
     {
-        Debug.Log(character.speed);
-        List<GameObject> validTiles = new List<GameObject>();
-        int location = game.map.ToTileCoordinates(currentCharacter.transform.position);
+        for(int i = 0; i < validTiles.Count; ++i)
+        {
+            validTiles[i].GetComponent<FloorTile>().ChangeColor(FloorTile.mat.regular);
+        }
+        validTiles = new List<GameObject>();
         int index;
         GameObject tile;
-        for (int x = -character.speed; x <= character.speed; ++x)
+        int location = game.map.ToTileCoordinates(pos.transform.position);
+        int xStart = location % game.map.tileWidth;
+        int yStart = location / game.map.tileWidth;
+        for (int x = -speed; x <= speed; ++x)
         {
-            for (int y = -character.speed; y <= character.speed; ++y)
+            for (int y = -speed; y <= speed; ++y)
             {
-                if (location%game.map.tileWidth + x >= 0 && location%game.map.tileWidth + x < game.map.tileWidth &&
-                    location/game.map.tileHeight + y >= 0 && location/game.map.tileHeight + y < game.map.tileHeight)
+                if (Mathf.Abs(x) + Mathf.Abs(y) > speed)
                 {
-                    index = location + x  + tileWidth * y;
-                    Debug.Log(index);
+                    continue;
+                }
+                if (xStart + x >= 0 && xStart + x < game.map.tileWidth && 
+                    yStart + y >= 0 && yStart + y < game.map.tileHeight)
+                {
+                    index = location + x + game.map.tileWidth * y;
                     tile = game.map.mapTiles[index];
-                    if (tile && !validTiles.Contains(tile))
+                    if (tile)
                     {
                         validTiles.Add(tile);
                         tile.GetComponent<FloorTile>().ChangeColor(FloorTile.mat.highlight);
@@ -192,6 +245,14 @@ public class GameController : MonoBehaviour {
                 }
             }
         }
-        return validTiles;
+    }
+
+    bool isValidTile(GameObject tile)
+    {
+        if (validTiles.Contains(tile))
+        {
+            return true;
+        }
+        return false;
     }
 }
