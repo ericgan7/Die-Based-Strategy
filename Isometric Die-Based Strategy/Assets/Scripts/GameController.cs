@@ -12,8 +12,8 @@ public class GameController : MonoBehaviour {
     public int tileWidth;
 
     public List<GameObject> characterLocations;
-    public GameObject[] allies;
-    public GameObject[] enemies;
+    public List<GameObject> allies;
+    public List<GameObject> enemies;
     public int currentTurn;
     public int allyTurn;
     public int enemyTurn;
@@ -129,7 +129,8 @@ public class GameController : MonoBehaviour {
     public void EndBattle()
     {
         game.playerController.state = PlayerController.playerState.movement;
-        character.state = CharacterMovement.charState.idle;
+        character.reset();
+        NextTurn();
     }
 
     public void OnClickDieDown(GameObject die)
@@ -158,7 +159,7 @@ public class GameController : MonoBehaviour {
     void Start()
     {
         GridMovement map = GameObject.FindObjectOfType<GridMovement>();
-        int max = Mathf.Max(allies.Length, enemies.Length);
+        int max = Mathf.Max(allies.Count, enemies.Count);
         characterLocations = new List<GameObject>(map.tileWidth * map.tileHeight);
         for (int i = 0; i < map.tileWidth * map.tileHeight; ++i)
         {
@@ -166,11 +167,11 @@ public class GameController : MonoBehaviour {
         }
         for (int i = 0; i < max; ++i)
         {
-            if (i < allies.Length)
+            if (i < allies.Count)
             {
                 characterLocations[map.ToTileCoordinates(allies[i].transform.position)] = allies[i];
             }
-            if (i < enemies.Length)
+            if (i < enemies.Count)
             {
                 characterLocations[map.ToTileCoordinates(enemies[i].transform.position)] = enemies[i];
             }
@@ -196,20 +197,20 @@ public class GameController : MonoBehaviour {
         currentTurn = (currentTurn + 1) % 2;
         if (currentTurn == 0)
         {
-            allyTurn = (allyTurn + 1) % allies.Length;
+            allyTurn = (allyTurn + 1) % allies.Count;
             currentCharacter = allies[allyTurn];
         }
         else
         {
-            enemyTurn = (enemyTurn + 1) % enemies.Length;
+            enemyTurn = (enemyTurn + 1) % enemies.Count;
             currentCharacter = enemies[enemyTurn];
         }
         character = currentCharacter.GetComponent<CharacterMovement>();
-        validTiles.Clear();
         currentPath.Clear();
         lastTile = game.map.mapTiles[game.map.ToTileCoordinates(character.transform.position)];
         GetMovementTiles(currentCharacter, character.speed);
         speed = character.speed;
+        canMove = true;
     }
 
     void GetMovementTiles(GameObject pos, int speed)
@@ -254,5 +255,17 @@ public class GameController : MonoBehaviour {
             return true;
         }
         return false;
+    }
+
+    public void removeChar(GameObject unit, bool isAlly)
+    {
+        if (isAlly)
+        {
+            allies.Remove(unit);
+        }
+        else
+        {
+            enemies.Remove(unit);
+        }
     }
 }

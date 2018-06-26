@@ -32,16 +32,31 @@ public class CharacterMovement: MonoBehaviour {
         place = 0;
     }
 
+    public void reset()
+    {
+        destination.Clear();
+        previousPos = transform.position;
+        state = charState.idle;
+        place = 0;
+    }
+
     void FixedUpdate()
     {
         if (state == charState.move)
         {
-            if (destination.Count == 1 && game.gameController.characterLocations[game.map.ToTileCoordinates(destination[destination.Count - 1])])
+            if (destination.Count - place == 1)
             {
-                Debug.Log("Fight");
-                state = charState.attack;
-                place = 0;
-                game.gameController.StartBattle(game.gameController.characterLocations[game.map.ToTileCoordinates(destination[destination.Count - 1])].gameObject, ally);
+                if (game.gameController.characterLocations[game.map.ToTileCoordinates(destination[place])])
+                {
+                    Debug.Log("Fight");
+                    state = charState.attack;
+                    place = 0;
+                    game.gameController.StartBattle(game.gameController.characterLocations[game.map.ToTileCoordinates(destination[destination.Count - 1])].gameObject, ally);
+                }
+                else
+                {
+                    game.gameController.EndBattle();
+                }
             }
             else if (place < destination.Count)
             {
@@ -61,6 +76,11 @@ public class CharacterMovement: MonoBehaviour {
         {
             
         }
+        else if (state == charState.dead)
+        {
+            game.gameController.removeChar(gameObject, ally);
+            transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
+        }
     }
 
     public void AddDestination(Vector3 d)
@@ -68,5 +88,12 @@ public class CharacterMovement: MonoBehaviour {
         destination.Add(new Vector3(d.x, transform.position.y, d.z));
     }
 
-
+    public void damage(int amount)
+    {
+        health -= amount;
+        if (health <= 0)
+        {
+            state = charState.dead;
+        }
+    }
 }

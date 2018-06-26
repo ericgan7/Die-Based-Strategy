@@ -360,7 +360,7 @@ public class BattleUI : MonoBehaviour
                 game.leftUI.removeDie(true);
                 if (game.rightUI.defenseIndex < 0)
                 {
-                    --oppChar.health;
+                    oppChar.damage(1);
                 }
                 else
                 {
@@ -374,7 +374,7 @@ public class BattleUI : MonoBehaviour
                 game.rightUI.removeDie(true);
                 if (game.leftUI.defenseIndex < 0)
                 {
-                    --playerChar.health;
+                    playerChar.damage(1);
                 }
                 else
                 {
@@ -387,10 +387,11 @@ public class BattleUI : MonoBehaviour
         {
             while (game.rightUI.attackIndex >= 0)
             {
+                Debug.Log("Attack");
                 game.rightUI.removeDie(true);
                 if (game.leftUI.defenseIndex < 0)
                 {
-                    --playerChar.health;
+                    playerChar.damage(1);
                 }
                 else
                 {
@@ -404,7 +405,7 @@ public class BattleUI : MonoBehaviour
                 game.leftUI.removeDie(true);
                 if (game.rightUI.defenseIndex < 0)
                 {
-                    --oppChar.health;
+                    oppChar.damage(1);
                 }
                 else
                 {
@@ -416,6 +417,7 @@ public class BattleUI : MonoBehaviour
         game.gameController.EndBattle();
         SetUI(false);
         reset();
-        game.gameController.NextTurn();
+        game.rightUI.reset();
+        game.leftUI.reset();
     }
 }

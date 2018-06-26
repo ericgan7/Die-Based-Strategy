@@ -251,7 +251,7 @@ MonoBehaviour:
   speed: 3
   attack: 4
   defense: 6
-  health: 0
+  health: 2
   ally: 0
   attackMoves: 
   defenseMoves: 
@@ -597,7 +597,7 @@ MonoBehaviour:
   speed: 6
   attack: 6
   defense: 2
-  health: 0
+  health: 4
   ally: 1
   attackMoves: 000000000100000002000000
   defenseMoves: 0000000001000000
@@ -1348,7 +1348,7 @@ MonoBehaviour:
   speed: 5
   attack: 5
   defense: 3
-  health: 0
+  health: 1
   ally: 1
   attackMoves: 000000000100000002000000
   defenseMoves: 0000000001000000
@@ -2412,8 +2412,10 @@ MonoBehaviour:
   characterLocations: []
   allies:
   - {fileID: 526037247}
+  - {fileID: 213517257}
   enemies:
   - {fileID: 136499863}
+  - {fileID: 1282184590}
   currentTurn: 0
   allyTurn: 0
   enemyTurn: 0
@@ -3121,7 +3123,7 @@ MonoBehaviour:
   speed: 4
   attack: 5
   defense: 4
-  health: 0
+  health: 3
   ally: 0
   attackMoves: 
   defenseMoves: 

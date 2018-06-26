@@ -77,7 +77,10 @@ public class DieDisplay : MonoBehaviour {
 
     public void reset()
     {
-
+        attackIndex = -1;
+        defenseIndex = -1;
+        attackDie.Clear();
+        defenseDie.Clear();
     }
 
     public void removeDie(bool attack)
