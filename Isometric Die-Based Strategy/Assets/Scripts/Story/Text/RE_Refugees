@@ -1,0 +1,56 @@
+=== Bandits_attack ===
+    You come across a fallen tree on the road. A quick scan reveals nothing suspicious.
+    *   [Get your axe out and start chopping]
+        You start clearing the road. Nearby, others follow your example and start chopping at the tree.
+        Suddenly, bandits spring out of the surrounding forests and attack you! The few unfortunate clansmen nearest to the forest are cut down before you can yell.
+        #start battle
+    *   [Order men to start chopping]
+        As they start hacking at the tree, you notice movement in the forst. Bandits, you yell! They quickly close in on your carvan, but your warning lets your fighters pull our shields before the bandits can attack.
+    
+    *   [Send warning down the caravan. It could be a trap]
+        Before too long, you see movement in the trees. You fighters are ready when they charge out of the forest.
+    
+    *   [Attempt to go around].
+        The woods are thick and it is difficult to manuveur the carts in the forest. Its rough work. Suddenly, you hear a scream behind you. Bandits!
+    
+ #aftermath   
+-   I should not have been caught unawares. Let me scout ahead for a few days. I can move faster on my own.
+    *   [We need you here in case sandmites catch up]
+    
+    *   [Let her go ahead.]
+    
+-->DONE
+
+=== first_camp_we ===
+We are moving too slowly. They will be upon us again before too long.
+    *   [The caravan is too big, we could split the caravan.]
+        Who would lead the other half?
+        **  You.
+        
+        **  Chieftan.
+    
+    *   [We are not leaving anyone behind. We will have to make do.]
+        I am too used traveling alone. 
+    
+    *   [We can ditch some supplies to lighten the load.]
+        Foraging for food would slow us further. Do we have enough to make it to {city}.
+            **  [Yes.]
+            
+            **  [No.]
+
+-   It has been a long time since I have been near so many.
+    -   (top) She looks faintly disturbed at the prospect.
+        *   [Don't you have family?]
+        
+        *   [Why don't you like people?]
+        
+        *   [You don't have to stay if you don't want to.]
+        
+        *   {end} Leave her to her own thoughts.
+        
+    - (end)->top
+
+
+    
+
+-> DONE

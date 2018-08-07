@@ -1,4 +1,6 @@
 INCLUDE Army
+INCLUDE RE_Refugees
+
 EXTERNAL place_Char(char_name, location)
 //combat, normal dialogue 
 EXTERNAL set_dialogue_type(type)
@@ -15,6 +17,7 @@ VAR city = "Ubersriek"
 -> village
 === tavern ===
 //characters:
+//place_Char(chief, 0)
 This tavern has seen better days, but its still among the better places in the city. You all crowd around a table lamenting your fortunes. 
 *   [Complain about the docks]
     Fishermen come back with frightening stories of strange creatures out there. Hopefully nothing more than stories.
@@ -172,16 +175,13 @@ They haven't been seen in hundreds of years. Who's to say its as bad? We can't j
             ~   leave_early = true
         ->DONE
         
-        *** [Stay another day]
-            I'll stay another day to prepare.
-            
         *** [Stay]
-            If no one is willing to join me, then I'll stay.
+            I'll stay another day to prepare.
             
 *   [We can wait. A few days will allow us to pack for the journey.]
     A grave risk for a few trinkets.
     
--   I hope you know what you are doing. I will go send a message to {we_forest}.
+-   I hope you know what you are doing. I must send word to my kin. Go prepare.
 She leaves without waiting for a response.
 
 There is no shortage of work to do. You consider your options, knowing that anything you decide will likely take the rest of the day.
@@ -197,6 +197,32 @@ There is no shortage of work to do. You consider your options, knowing that anyt
 
     It is not long before you begin to see movement.
 
+#fight
+
+#chieftan
+What a night. I thought that they would never stop coming.
+#elf
+This is just the beginning. Their scouts. It will get worse. We would be wise to leave.
+
+But... No of course. I wish we had the strength to hold them back, like the heroes of legends. It is foolish to think so.
+#elf
+Legends must begin somehwere. But we alone cannot hold.
+#cheiftan.
+The {city} has walls and a garrison.
+#elf 
+Then let us move.
+#chief
+-We are still gathering supplies. We do not have enough to make it all the way to {city} on what we have now. Another day and we could get every cart in the city filled.
+
+What do you think?
+
+    *   [We need another day to get everyone ready to move]
+        There is no guarentee that there will be people left tomorrow.
+        
+        We'll take that chance.
+        
+        Bah. You tempt fate.
+    *   [We leave immediately]
+        Then let us hope that we find kindness along the road.
+-
 ->DONE
-=== leave_village ===
--> DONE

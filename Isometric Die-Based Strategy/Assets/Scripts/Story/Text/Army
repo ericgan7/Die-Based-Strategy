@@ -1,0 +1,33 @@
+#Summary
+#army is baracked on the southern western border, defending against raiders. You see only a few skrimished a month, most have not seen a real battlefield.
+
+#Word eventuall comes of an invasion to the south east. You are ordered to march down and join the other battallions against the threat. The news is met with shock and anger. You begin the journey confident, vowing to throw back the invaders.
+#On route, you meet a lot of refugees and travellers fleeing. -> joins (two mercenaries?)
+#Initially, combat goes well. You defeat their forward elements without many casualities. 
+#As their main force is brought north, you are forced back by sheer weight of numbers.
+#The arrival of their warriors sends the army in too a fighting retreat.
+#Reinforcements come from the capital -> joined by new characters (warden, mage, mountain tribesmen).
+#For now, you seem to hold them back, but losses begin to mount. 
+
+#characters
+VAR harpy_blue = "Trega"
+VAR harpy_red = "Kami"
+VAR mage = "Chana"
+VAR warden = "Szeth"
+
+#locations
+VAR border = "southerwestern border"
+
+->barracks
+
+=== barracks ===
+Its been five months since you've been assigned to the {border}. There have been a few skirmished with raiders, but a good show of force was usually enough to make them back off.
+Most of the time, you and the rest of the regiment are fighting boredom. You and a few others are playing cards when you hear the horn call.
+
+Another group of raiders? Let's get this over with.
+
+You're lucky, I was about to win.
+
+#Teh captain is in the pavilion, an older veteran who must've angered somebody to be put out so far from the capital
+
+->DONE
