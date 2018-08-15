@@ -1,0 +1,4 @@
+
+EXTERNAL observe_var(type, amount)
+=== function observe_var(type, amount)
+~return 1

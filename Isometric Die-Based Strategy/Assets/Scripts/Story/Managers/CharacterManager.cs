@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterManager : MonoBehaviour {
+public class CharacterManager : Singleton<CharacterManager> {
     public GameObject[] characters;
     public Dictionary<string,Character> charData;
     public List<Character> activeChar;

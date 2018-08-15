@@ -9,16 +9,6 @@
 #Reinforcements come from the capital -> joined by new characters (warden, mage, mountain tribesmen).
 #For now, you seem to hold them back, but losses begin to mount. 
 
-#characters
-VAR harpy_blue = "Trega"
-VAR harpy_red = "Kami"
-VAR mage = "Chana"
-VAR warden = "Szeth"
-
-#locations
-VAR border = "southerwestern border"
-
-->barracks
 
 === barracks ===
 Its been five months since you've been assigned to the {border}. There have been a few skirmished with raiders, but a good show of force was usually enough to make them back off.

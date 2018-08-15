@@ -1,68 +1,19 @@
-INCLUDE Army
 INCLUDE RE_Refugees
+INCLUDE Army
+INCLUDE names
+INCLUDE City
+INCLUDE functions
 
-EXTERNAL place_Char(char_name, location)
-//combat, normal dialogue 
-EXTERNAL set_dialogue_type(type)
-
-#characters
-VAR player = "Eric"
-VAR daughter = "Diana"
-VAR woodElf = "Kerillian"
-VAR chief = "CHIEF"
-
-#locations
-VAR we_forest = "Athel Loren"
-VAR city = "Ubersriek"
--> village
-=== tavern ===
-//characters:
-//place_Char(chief, 0)
-This tavern has seen better days, but its still among the better places in the city. You all crowd around a table lamenting your fortunes. 
-*   [Complain about the docks]
-    Fishermen come back with frightening stories of strange creatures out there. Hopefully nothing more than stories.
-*   (guard)[Grumble about guard duty]
-    High taxes and poor harvests make for a hard year. The desperate are driven more frequently to crime.
-*   [Moan about your ill fortune]
-    Trade has been slow and jobs are few.
-    
-#You friend, NAME, works on in the guard
-//{place_Char("Actor 2", 0)}
--Roache's carvan was suppose to come in a few days ago. Third carvan to come go missing this month. If this keeps up, there will be bread riots.
-*   [Blame the border patrols]
-    Hmph. Most have been reassigned to the Northern border to fight the High Elves. How are they suppose to keep the roads with so few?
-    **  [They are incompetent]
-        Then why don't you join up and do something about it instead of -
-    **  [Perhaps we should enlist and do something]
-        It'll be dangerous... Bandits are a lot tougher than a bunch of street urchins. Maybe -
-    **  [Drop the subject]
-
-*   [Complain about the god King]
-    Shhh. Not so loud. His absence only makes his priests more likely to strike out. Light above, they are already angry with how the war is going.
-    **  [What if he does not return?]
-        Then fewer and fewer will join the Order of Light and others will take its place. Theres no reason to - 
-    **  [They are the reason for all these wars]
-        He also unified the Five Kingdoms. Look, I'm - 
-    **  [Drop the subject]
-        Yeah, there are too many ears around. Let's go to - 
-
-*   [Something must be done]
-    Hah. Perhaps we should join up with a merchant. Probably pay well given the state of things.
-//{place_Char("Actor 2", 0)}
--  A scuffle breaks out over a few drinks.
-Looks like its time to move on. Best escalate it anymore, especially when { guard: we're|I'm } not on duty. Let's...
-Shit. Look's like one of the gangs is making a play for power. Guard up!
-
-//After the fight
-Where's the damn guard? They should be here by now. 
-
-Let's get out while we can.
-
-->DONE
+-> first_sandmite_encounter
 
 === first_sandmite_encounter ===
 VAR refugee_Food = 5
-It's like something out of the old stories. Was that a sand mite?
+
+Your hunt is interrupted by a roar that shakes the trees. 
+#function=startBattle(first_battle, 1  
+A six legged beast comes rushing out of the trees at you!
+
+-It's like something out of the old stories. Was that a sand mite? 
 
 Maybe. If that's true then there may be more. We must return to town and warn them.
 
@@ -105,7 +56,7 @@ Already, she is beginning to fletch more arrows.
     *   (Advice)[Should we run or fight?]
         It is too late to run now. They are more activate at dusk. We may leave at dawn, earliest.
 
--   If they truely broke through Obrin, then we cannot hold here long. Diana, show me your arrows.
+-   If they truely broke through Obrin, then we cannot hold here long. Diana, help me with these arrows.
 
 After sharing a quick glance, Diana starts to help Kerillian prepare arrows. You head to the great hall to warn the chieftan. It will be dusk in just a few hours. 
 //move background

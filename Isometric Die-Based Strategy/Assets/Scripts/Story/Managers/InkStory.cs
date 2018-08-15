@@ -21,10 +21,17 @@ public class InkStory : MonoBehaviour {
     private GameManager gm;
     private CharacterManager cm;
     private dialoguePanel dp;
+    private GameSceneManager sm;
+    private GameState gs;
+    private string currentSpeaker;
+    public bool battle;
+    public bool result;
 
     void Start() {
-        cm = GetComponent<CharacterManager>();
-        gm = GetComponent<GameManager>();
+        cm = FindObjectOfType<CharacterManager>();
+        gm = FindObjectOfType<GameManager>();
+        sm = FindObjectOfType<GameSceneManager>();
+        gs = FindObjectOfType<GameState>();
         RemoveChildren();
         StartStory();
     }
@@ -32,16 +39,29 @@ public class InkStory : MonoBehaviour {
     void StartStory()
     {
         story = new Story(inkJSONAsset.text);
-        story.BindExternalFunction("place_Char",(string name, int location) =>
+        story.BindExternalFunction("place_char", (string name, int location, bool speaker) =>
+         {
+             cm.PlaceChar(name, location);
+             if (speaker)
+             {
+                 currentSpeaker = name;
+             }
+         });
+        string progress = gs.loadStory();
+        if (progress != null)
         {
-            cm.PlaceChar(name, location);
-        });
+            story.state.LoadJson(progress);
+        }
         RefreshView();
     }
 
     public void RefreshView()
     {
-        if (story.canContinue)
+        if (result)
+        {
+            battle = result; 
+        }
+        else if (story.canContinue)
         {
             RemoveChildren();
             string text = story.Continue();
@@ -61,6 +81,7 @@ public class InkStory : MonoBehaviour {
                     });
                 }
             }
+            result = parseFunctions();
         }
     }
 
@@ -70,6 +91,7 @@ public class InkStory : MonoBehaviour {
         dp = d.GetComponent<dialoguePanel>();
         dp.story = this;
         dp.SetText(text);
+        dp.SetName(currentSpeaker);
         dp.transform.SetParent(canvas.transform, false);
     }
 
@@ -101,5 +123,37 @@ public class InkStory : MonoBehaviour {
         {
             GameObject.Destroy(canvas.transform.GetChild(i).gameObject);
         }
+    }
+    
+    bool parseFunctions()
+    {
+        for (int i = 0; i < story.currentTags.Count; ++i)
+        {
+            string[] tag = story.currentTags[i].Split('=');
+            if (tag[0] == "function")
+            {
+                if (tag[1].Contains("startBattle"))
+                {
+                    string[] parameters = tag[1].Split('(')[1].Split(',');
+                    StartCoroutine(startBattle(parameters[0], int.Parse(parameters[1])));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    IEnumerator startBattle(string sceneName, int severity)
+    {
+        Debug.Log("START");
+        while (battle == false)
+        {
+            Debug.Log("WAIT");
+            yield return new WaitForSeconds(0.5f);
+        }
+        battle = false;
+        Debug.Log("FIGHT");
+        gs.saveStory(story.state.ToJson());
+        sm.loadScene(sceneName);
     }
 }

@@ -4,4 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_Scenes/Traversal.unity
+    guid: 70f106eb10c4a844c8875078488030c7
+  - enabled: 1
+    path: Assets/_Scenes/first_battle.unity
+    guid: e86434d7e18a3bf4cbdf388fbce3bc00
+  m_configObjects: {}

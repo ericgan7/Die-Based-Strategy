@@ -1,0 +1,24 @@
+#characters
+#army
+#characters
+CONST harpy_blue = "Trega"
+CONST harpy_red = "Kami"
+CONST mage = "Chana"
+CONST warden = "Szeth"
+
+#refugees
+CONST player = "Garen"
+CONST daughter = "Diana"
+CONST woodElf = "Kerillian"
+CONST chief = "CHIEF"
+CONST spearman = "teft"
+CONST shieldbearer = "skar"
+
+#story
+CONST king = "Artois"
+
+#locations
+CONST we_forest = "Athel Loren"
+CONST city = "Ubersriek"
+CONST border = "southerwestern border"
+CONST village1_name = "Hapsburg"

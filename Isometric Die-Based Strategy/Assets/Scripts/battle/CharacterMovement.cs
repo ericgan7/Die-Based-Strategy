@@ -64,8 +64,8 @@ public class CharacterMovement: MonoBehaviour {
                 {
                     Debug.Log("Fight");
                     state = charState.attack;
+                    game.gameController.StartBattle(game.gameController.characterLocations[game.map.ToTileCoordinates(destination[place])].gameObject, ally);
                     place = 0;
-                    game.gameController.StartBattle(game.gameController.characterLocations[game.map.ToTileCoordinates(destination[destination.Count - 1])].gameObject, ally);
                 }
                 else if (Vector3.Distance(destination[place], transform.position) < 0.01f)
                 {
@@ -88,6 +88,7 @@ public class CharacterMovement: MonoBehaviour {
         {
             game.gameController.removeChar(gameObject, ally);
             transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
+            state = charState.idle;
         }
     }
 

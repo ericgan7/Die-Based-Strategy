@@ -1,19 +1,21 @@
+
 === Bandits_attack ===
     You come across a fallen tree on the road. A quick scan reveals nothing suspicious.
     *   [Get your axe out and start chopping]
         You start clearing the road. Nearby, others follow your example and start chopping at the tree.
         Suddenly, bandits spring out of the surrounding forests and attack you! The few unfortunate clansmen nearest to the forest are cut down before you can yell.
-        #start battle
+
     *   [Order men to start chopping]
         As they start hacking at the tree, you notice movement in the forst. Bandits, you yell! They quickly close in on your carvan, but your warning lets your fighters pull our shields before the bandits can attack.
+ 
     
     *   [Send warning down the caravan. It could be a trap]
         Before too long, you see movement in the trees. You fighters are ready when they charge out of the forest.
-    
+        
     *   [Attempt to go around].
         The woods are thick and it is difficult to manuveur the carts in the forest. Its rough work. Suddenly, you hear a scream behind you. Bandits!
     
- #aftermath   
+    //aftermath
 -   I should not have been caught unawares. Let me scout ahead for a few days. I can move faster on my own.
     *   [We need you here in case sandmites catch up]
     
@@ -21,9 +23,12 @@
     
 -->DONE
 
-=== first_camp_we ===
+=== camp2_we ===
+#woodelf #1
 We are moving too slowly. They will be upon us again before too long.
+#player #2
     *   [The caravan is too big, we could split the caravan.]
+    #woodelf #1
         Who would lead the other half?
         **  You.
         
@@ -38,8 +43,8 @@ We are moving too slowly. They will be upon us again before too long.
             
             **  [No.]
 
--   It has been a long time since I have been near so many.
-    -   (top) She looks faintly disturbed at the prospect.
+-   It has been a long time since I have been near so many. She looks faintly disturbed at the prospect.
+    -   (top)
         *   [Don't you have family?]
         
         *   [Why don't you like people?]
@@ -47,10 +52,308 @@ We are moving too slowly. They will be upon us again before too long.
         *   [You don't have to stay if you don't want to.]
         
         *   {end} Leave her to her own thoughts.
+        ->DONE
         
     - (end)->top
-
-
     
+=== camp1_shieldbearer ===
+{shieldbearer} is in the training ground, practicing against a few of his friends. When you approach, they break apart to get some water and rest.
+Hey, I saw you fight with us last time. You fight well for someone so young.
 
--> DONE
+Yeah, I've been practicing for a while now. {spearman} been teaching me. I wanted to join the army since I was little. Doesn't seem like I need to now though.
+-   (top)He cheerfully waits for your response.
+
+*   [Thats a strange shield. I've never seen anything like it.]
+    My da gave it to me before he died. He said he got it in the army. It took me a long time to learn to carry it properly, but I'm sure glad I did.
+
+*   [How are you holding up?]
+    Doing pretty good, all things considered. I finally get to protect people, put my training to use. Its great!
+    
+    Don't get too confident. You don't have to play hero.
+    
+    Yeah, of course not. But its still a chance to prove myself.
+    
+*   [You seem a little too excited for this.]
+    It's like something straight of of a story! Its incredible.
+    
+    A lot of people may not make it.
+    
+    I'll protect them. I'll try my best at least.
+    
+*   {next} [Keep it up, but don't get carried away.]
+    Of course, sir! 
+    ->DONE
+-(next) ->top
+
+=== camp1_diana ===
+You find Diana fletching arrows by the campfire.
+
+How are you holding up?
+
+I'm doing ok. I trained more with the bow when I had the time though. {woodElf} has been teaching me a little, but its slow. She gets cross easily.
+-(top)
+*   [Any useful tips you want to pass on?]
+    Its mostly about form and concentration. I'm sure you already know most of it. And also this.
+    She holds up the arrow shes been making.
+    
+    They're not as good as hers, but they fly pretty straight. She's been teaching anyone that wants to hold abow.
+
+*   [How is {woodElf} doing?]
+    I don't know. She doesn't like to talk much. I sometimes wonder why she hangs around us.
+    
+    I've know her for a long time years. Has come around our village since before you were born. We can trust her.
+    
+    I know, I know.
+    
+*   [Are you getting enough to eat?]
+    Yes, dad. You don't have to worry. Its not that much worse than our hunting trips. Not yet anyway.
+
+*   {end} If anything comes up, let me know.->next
+
+- (end) She fletches another arrow.->top
+
+- (next) Are we going to stay in {city}? If they are really as scary as {woodElf} says, then it will be a long time before we can go back. 
+
+Yes it will be. Perhaps we can find work in the city, or settle someplace new. I'll figure it out.
+-->DONE
+
+=== camp1_spearman ===
+You see one of the spearman that fought by your side. He is working through his spearman forms. 
+
+Hey, you were pretty good. You fought before?
+
+Against the savages up north. Feels like a lifetime ago. Nothing like fighting against these things though, and I haven't held a proper spear in years.
+- (top) You consider your response.
+*   [What was it like fight in an army?]
+    Most of the time we were just marching, or waiting. Not much like the stories. We didn't even fight over anything important.
+    
+    What did was the war about?
+    
+    The {king} got it in his head that he wanted to conquer them thats all. Theres nothin up there but shee and furs. And they already trade those to use for cheap. Waste of time and blood if you ask me.
+    
+*   [Any advice in fight these things?]
+    Never seen anything like 'em. They're faster than any man, and twice as strong. 
+    Atleast they don't seem to inclined to work together. If we can keep our lines stright and guard each others flanks, we should be fine.
+    
+    If they start forming battlelines, then I'd be running for the hills.
+
+*   [Can your train others to fight?]
+    Probably, though it'll take time. Might slow us down a bit too, and they won't be working on foraging or repairing stuff.
+    
+    We'll need people that can fight. Not just the sandmites either. They won't be too kind to refugees in the cities.
+    
+    Aye, you're right about that.
+    
+*   {next} [I'll stop interupting your training.]
+    And I'd welcome any adive you have. 
+    ->end
+-(next) -> top
+
+-(end) Aye, I'll make sure they don' sneak up on us.
+He returns to his spear forms.
+->DONE
+
+=== random_village ===
+You can see smoke rising in the distance, to the south, from {village1_name}.
+
+You consider your options. 
+    *   [Send scouts to the village]
+        It takes a day for the scouts to return, with a few survivors. The monsters were ramaging through the village, one scout reports. We saved who we could. Theres nothing left there.
+    
+    *   [Make a detour to help]
+        You are risking the entire caravan on a fool's journey. They will be dead long before we arrive. If that is truely an attack, then they are already much closer than we thought.
+            **  [I'll make the journey with a few others. The rest can keep going.]
+            We can't wait forever. Don't tarry too long. 
+            
+            **  [I'll send scouts insteaed.]
+             It takes a day for the scouts to return, with a few survivors. The monsters were ramaging through the village, one scout reports. We saved who we could. Theres nothing left there.
+            
+            **  [You're right, we have to keep moving.]
+    
+    *   [Ignore the smoke]
+        No time to stop. If that is an attack, then they could be upon us in a day or two. We must press on.
+
+--> DONE
+
+=== passing_through_village_1 ===
+~temp village_name = "Kipsin"
+{village_name} is a welcoming sight after so long on the road. It has a few thin wooden walls protecting it. Its feels like the first time you've gotten the chance to catch your breath and enjoy some warm food.
+
+They thank you for your warning about the sandmites and a few join your caravan. Most seem confident that they can defend their homes however.
+
+-->DONE
+
+=== village1_Diana ===
+You find Diana by the hearth, fletching arrows. Seems like its becoming a habit.
+What will happen to those that don't leave.
+
+Hopefully nothing. We can't exactly force them to leave though.
+
+I know, I'm just worried we should be doing more.
+-(Top) She waits quietly for your response.
+*   [How goes your training?]
+    I'm getting a lot better. Did {woodElf} teach you too?
+    
+    A little. Nothing about killing monsters though, just hunting. I guess she never thought we'd see sandmites around here.
+
+*   [Where do you think we should go next?]
+    Me? I don't know. Everywhere seems so far away.
+    
+*   [Get some rest. We can't stay too long.] ->DONE
+
+-->Top
+=== village1_welf ===
+You find {woodElf} on the outskirts of the walls, watching the stars.
+
+Not staying inside? They have pretty good stew inside.
+
+I have no interest in your kind of food. Besides, having people stare and whisper behind my back makes my skin crawl. 
+
+-(Top)You consider your response.
+*   [You're fine with staying out here?]
+    I have lived alone for a long time. This is nothing new.
+    
+    Never get lonely?
+    
+    Of course it does. We are are not so different. But I still prefer the company of stars than men.
+    
+*   [Do you think we can stay here?]
+    I don't think these walls will hold long. It can keep us safe for a while certainly, but without a proper fighting force...
+    
+    Where should we go then?
+    
+    I'm not sure. You would know your empire better than I, I should think.
+    
+    Towards the capital would probably be the safest then.
+
+*   [You never answered me about why you carry two quivers.]
+    These arrows are made differently. A trick I learned from others more skilled than I.
+    
+    How are they different?
+    
+    Pray you never need to see it fired.
+    
+    Fine, Fine.
+    She gives you a rare smile.
+    
+*   {end} Stay safe out there, {woodElf}. ->done
+
+- (end)->Top
+
+- (done) She goes back to watching the stars. ->DONE
+
+=== falling_stars ===
+Falling stars light up the night sky. Legend says that they are pieces of the astral planes that have broken off. Extremely rare, extremely valuable. One piece passes close overhead.
+-(top) A once in a lifetime event. 
+
+*   [Ask {woodElf} about the falling stars]
+    What do you know of the Gods?
+    **  [The less I know about them, the better.]
+        Wise. They care little for mortal lives. The astral gods in particular, are the most deadly.
+    
+    **  [Not much, other than old songs.]
+    Wise. They care little for mortal lives. The astral gods in particular, are the most deadly. Their realms are disconnected from ours, blasted out of existence in the first immortal war. Their realms only exist through magic now. 
+    Should the spells be undone, or their source be cut off, their realm will collapse. There is nothing more dangerous than a desperate god.
+    -These are pieces of their power. You will draw the attention of the Gods if you seek their power. 
+    ->top
+    
+*   [Explore around and see if you can find a piece]
+    You scour the forest looking for that piece.
+    After a long search, you find a piece. It glows a faint blue in the night. It hums faintly in your hands.
+    //artifact
+    
+        
+
+*   [Continue watchig the stars]
+    It may not happen for another century or more. You soak in the incredible sight.
+    // + morale
+
+*   [Take shelther underneath some trees].
+    A wise decision as it turns out. A piece hits an unfortunate woman, burning skin and breaking bones before continuing on into the darkness.
+    //death + lose morale
+    
+-->DONE
+
+=== other_refugess ===
+A small group of ragged people approach your caravan. They carry nothing but a few hand tools.
+
+Please, we need food and water. Anything.
+*   [What happened to you?]
+    sandmites came and destroyed our village, and we barely got out. We have nothing left. Ran out of food three days ago. Please.
+
+*   [Spare some supplies.]
+    Bless you! May the Gods watch over you.
+    //+morale - supplies
+
+*   [We have nothing to spare.]
+    He is crestfallen. They continue they slow march along side your caravan for a while, begging from others a long the line. Eventually, you outpace them.
+    //-morale
+
+*   [You can join us if you are willing to pitch in.]
+    Of course! Gods be thanked, of course!
+    //+clansmen
+    
+-->DONE
+    
+=== Thunderstorm ===
+    A thunderstorm appears suddenly out of a clear sky. The wind and rain will make travel difficult. It could cause serious damage if it gets worse.
+-(top) You consider your options
+
+*   [Ask for advice]
+    //spearman
+    Looks as bad as I've ever seen. Our wagons will bog down in the mud if we try to travel in this.
+    //Shieldbearer
+    We should press on. A little rain won't stop the sandmites.
+    //Welf
+    The storm appeared to suddenly to be natural. An air mage perhaps? Or a thunderbird? Hard to tell, but it will be dangerous to stay in the area.
+    //Diana
+    The people are tired already. I don't think we can make much progress.
+    ->top
+
+*   [Press on ahead. There should be a town along the road.]
+    Soon, the wind and freezing rain become too much. You call for a stop.
+    //-moral
+*   [Make camp and wait out the storm.]
+    //camp
+    
+-->DONE
+
+=== Forest_roar ===
+You hear a scream echo from the forest.
+
+//welf
+Could be a trap. Or a leshen. Either way, best to not tempt the forest's ire.
+//Shieldbearer
+And leave a lady to die? You are a coward.
+//welf
+{player}, restrain the child before he hurts himself.
+You consider what to do.
+
+*   [Send {shieldbearer} with scouts towards the noise.]
+    {shieldbearer} stubles out with a few scouts in tow. 
+    
+    What happened?
+    
+    A trap. Some bandits jumped us in the trees, but we fought them off. There weren't too many, but they got us good.
+    //lose fighters
+
+*   [Send {woodElf} wth scouts towards the noise.]
+    {woodElf} returns after the sun the better part of a day. 
+    
+    What happened?
+    
+    Bandits. I swept through to make sure we got all of them. No damsel in distress, however.
+    //shieldbearer
+    Well its better safe then sorry.
+    //lots of time
+
+*   [Lead a party to investigate.]
+    //fight
+
+*   [Ignore the noise.]
+    You hear periodic screams as you march. It unnerves the carvan, but nothing comes out of the forest.
+    //-morale
+
+-->DONE
+
+

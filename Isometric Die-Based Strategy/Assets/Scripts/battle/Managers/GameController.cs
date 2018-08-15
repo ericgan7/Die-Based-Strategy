@@ -24,7 +24,37 @@ public class GameController : MonoBehaviour {
     public Stack<GameObject> path;
     public List<GameObject> currentPath;
     public GameObject lastTile;
+    private int results = 0;
 
+    public int BattleDone()
+    {
+        if (allies.Count == 0)
+        {
+            return 1;
+        }
+        else if (enemies.Count == 0)
+        {
+            return 2;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public void Update()
+    {
+        if (results == 0)
+        {
+            results = BattleDone();
+            if (results != 0)
+            {
+                Debug.Log("BATTLE DONE");
+                //FindObjectOfType<GameState>() modify recent victory, stats, etc.
+                FindObjectOfType<GameSceneManager>().loadScene("Traversal");
+            }
+        }
+    }
     public void SetPath(GameObject destination)
     {
         if (canMove)
@@ -267,13 +297,16 @@ public class GameController : MonoBehaviour {
 
     public void removeChar(GameObject unit, bool isAlly)
     {
+        Debug.Log("dead");
         if (isAlly)
         {
             allies.Remove(unit);
         }
         else
         {
+            Debug.Log("REMOVE");
             enemies.Remove(unit);
         }
+        characterLocations[game.map.ToTileCoordinates(unit.transform.position)] = null;
     }
 }
