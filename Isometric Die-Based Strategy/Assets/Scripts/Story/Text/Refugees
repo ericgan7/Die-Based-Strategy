@@ -1,0 +1,174 @@
+
+=== first_sandmite_encounter ===
+#Present=player,Diana
+<i>Your hunt is interrupted by a roar that shakes the trees. </i>
+#startBattle=first_battle,1  
+<i>A six legged beast comes rushing out of the trees at you!</i>
+
+#Speaker=Diana
+It's like something out of the old legends. What was that?
+#Speaker=players
+I'm not sure, but there may be more. We should return to town, quickly.
+#Speaker=Diana
+What about our things back at camp? Should we just leave them?
+
+    *   [Let's go back. Let's try to to draw any more of them.]
+        ~Refugee_Food += 5
+        <i>You and Diana break camp as quietly as you can. Your heart pounds as you make your way out of the forest.</i>
+    
+    *   [Let's go back, quickly!]
+        ~Refugee_Food += 2
+        <i>You reach camp safely with Diana and are relieved to see that it is still intact. You break camp and start to gather your things.</i>
+        <i>You hear a screech in the distance. You grab the most important things and set off with Diana.</i>
+    
+    *   [It's too dangerout. We don't know if theres more of them out there]
+        <i>You hurry out of the forest. Diana looks relieved to be out of there</i>
+-   ->DONE
+
+=== home_village ===
+#Present=player,Diana,woodelf,
+//returns from a hunt having encountered a sand mite.
+
+#Speaker=woodelf
+You return quickly. Poor hunt?
+#Speaker=Diana
+We saw a huge six legged beast! Five feet long, purple covered in bony plate.
+#Speaker=woodelf
+What? This far north?
+#Speaker=player
+What were those things?
+#Speaker=woodelf
+The {monsters} are from the far southern deserts. My kin are more familiar with them but, I do know that they are numberless and always ravenous. They are hindered by trees though, and the wastes usually discourage them from venturing this far North.
+
+How did they get this far withough warning? No matter.We must prepare. You must've seen one of their scouts. They rarely travel as individuals. Other will likely not be far behind.
+
+#Speaker=player
+I will go warn the town.
+
+    *   (Defend)[I'll talk to him about defenses.]
+    Maybe your town as more bite than I thought. I certainly hpoe so.
+    
+    *   (Evacuate)[I'll get him to start evacuating the town.]
+    Then be swift. It will not be easy moving this many people
+    
+    *   (Advice)[Should we run or fight?]
+    Run if we can. fight if we must. 
+
+-   If they truely broke through {southern_fort}, then who knows are many of them there are. Diana, help me with these arrows.
+
+<i>After sharing a quick glance, Diana starts to help Kerillian prepare arrows. You head to the great hall to warn the chieftan.</i>
+
+->DONE
+
+== great_hall ==
+#Present=player,chieftan
+    You describe the beast you killed in the forest to the chieftan the best you can. All are shocked. Some are incredulous.
+#Speaker=chieftan
+    Gods be damned! What should we do?
+#Speaker=player
+You consider what you can do.
+*   [We must  prepare defenses.]
+    Not many know how to fight. I'll gather those who can. We can put up some barricades as well. Gods let it be enough.
+    ~danger = 2
+
+*   [We must gather our supplies while we can and leave.]
+    I can't just make everyone up and leave! Impossible. We should at least try to defend our homes.
+
+*   [We should send a message a ahead to warn the {city}.]
+    ~warn_town = true
+    Fine, I'll pen a message to them. Gods, how did it come to this.
+    
+-   Already you can hear their shrieks drawing near. You rush outside.
+
+//Elf
+She silently prays to her elven gods.
+
+//Diana & main
+Stay close to me.
+Don't worry, I will.
+
+//others?
+
+#startBattle=village_1, {danger}
+-Before long, {monsters} emerge from the tree linne and charge!
+-> DONE
+
+=== village_aftermath ===
+VAR leave_early = true
+#Present=player,woodelf,chieftan,Diana.
+
+<i> They broke off as dawn drew near. Everyone gathers in the great hall, shocked and frightened.</i>
+
+#Speaker=chieftan
+What a nightmare. What Gods did we anger to get such punishment.
+#Speaker=woodelf
+There will be more, especially if they had the numers to break through {southern_fort}.
+#Speaker=player
+How long will it take to evacuate the town?
+#Speaker=chieftan
+Where would we go? {city}? We would need 10 days of supplies to get there, not to mention whats after. The more time to pack the better.
+#Speaker=woodelf
+The dead do not eat. You risk much by staying.
+#speaker=chieftan
+{player}, what do you think?
+#Speaker=player
+Supplies now means we can move without foraging.
+#Speaker=chieftan
+It will take a day to get the everybody to pack and ready to move anyway.
+#Speaker=woodelf
+Men and their trinkets.
+#Speaker=player
+    ->defending_town->
+-   Night falls. You and a few other unwounded fighters gather to watch the forest.
+//call update on UI?
+    It is not long before you begin to see movement.
+
+#startBattle=home_village2, {danger}
+
+#chieftan
+What a night. I thought that they would never stop coming.
+#player
+How is the evacuation going?
+#Chieftan
+Most people are ready to leave, and the town store house has been packed up. We're still waiting on the families on the outskirts of town to return.
+#Speaker=player
+<i> You consider your response. </i>
+*   [We can't afford to wait. What if this night is even worse?]
+    You're right. I've been hoping they'd return before now. We move then.
+    ->leaving
+
+*   [One more day then.]
+    They would do the same for us, I hope. Rest up. It will be a long night.
+    ->defending_town->
+    #startBattle=home_village3, 10
+    Once more, as dusk approaches, shrieks sound in the air. It is joined by a much deeper roar.
+    
+#Speaker=chieftan
+Finally, the rest of the families have arrived.
+->leaving
+
+=== defending_town === 
+<i>There is no shortage of work to do. You consider your options, knowing that anything you decide will likely take the rest of the day.</i>
++   (fortify)[Help fortify the walls.]
+    ~danger -= 3
+
+*   (clean)[Help clear out the rubble.]
+    In one of the collapsed buildings, you find a silver pendant. Perhaps someone will want it back. You pick it up and continue working.
+    //gain a trinket
+
++   (heal)[Tend to the wounded.]
+    ~Refugee_Clansmen += 20
+
++   (resupply)[Gather supplies.]
+    ~Refugee_Food += 30
+-->DONE
+=== leaving ===
+#Present=Diana,player,elf,chieftan
+#Speaker=Diana
+Where should we go?
+#Speaker=cheiftan.
+The {city} has walls and a garrison. It is probably the best chance for safety
+#Speaker=elf 
+Then let us move. At long last.
+
+->DONE

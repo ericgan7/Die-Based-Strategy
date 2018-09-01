@@ -2,3 +2,7 @@
 EXTERNAL observe_var(type, amount)
 === function observe_var(type, amount)
 ~return 1
+
+//startBattle -> starts a battle.
+
+//need one to resume traveling

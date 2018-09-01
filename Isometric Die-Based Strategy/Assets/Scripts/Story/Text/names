@@ -14,11 +14,14 @@ CONST chief = "CHIEF"
 CONST spearman = "teft"
 CONST shieldbearer = "skar"
 
+#enemies
+CONST monsters = "faen life"
 #story
 CONST king = "Artois"
 
 #locations
 CONST we_forest = "Athel Loren"
 CONST city = "Ubersriek"
+CONST southern_fort = "Citadel of Dusk"
 CONST border = "southerwestern border"
 CONST village1_name = "Hapsburg"

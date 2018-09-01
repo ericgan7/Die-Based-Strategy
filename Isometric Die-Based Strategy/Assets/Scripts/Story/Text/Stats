@@ -1,0 +1,8 @@
+VAR Refugee_Food = 0
+VAR Refugee_Clansmen = 50
+VAR Refugee_Warriors = 30
+
+#Events
+VAR warn_town = false
+
+VAR danger = 5

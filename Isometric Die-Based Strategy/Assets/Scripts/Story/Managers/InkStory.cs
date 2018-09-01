@@ -4,13 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Ink.Runtime;
 
-public class InkStory : MonoBehaviour {
+public class InkStory : Singleton<InkStory> {
     [SerializeField]
     private TextAsset inkJSONAsset;
     private Story story;
 
-    [SerializeField]
-    private Canvas canvas;
+    public Canvas canvas;
 
     // UI Prefabs
     [SerializeField]
@@ -18,51 +17,78 @@ public class InkStory : MonoBehaviour {
     [SerializeField]
     private Button buttonPrefab;
 
-    private GameManager gm;
     private CharacterManager cm;
     private dialoguePanel dp;
     private GameSceneManager sm;
     private GameState gs;
+    private GameEventManager gm;
     private string currentSpeaker;
     public bool battle;
     public bool result;
 
     void Start() {
         cm = FindObjectOfType<CharacterManager>();
-        gm = FindObjectOfType<GameManager>();
+        gm = FindObjectOfType<GameEventManager>();
         sm = FindObjectOfType<GameSceneManager>();
         gs = FindObjectOfType<GameState>();
+        var obj = FindObjectsOfType<Canvas>();
+        for (int i = 0; i < obj.Length; ++i)
+        {
+            if (obj[i].name == "Story")
+            {
+                canvas = obj[i];
+                break;
+            }
+        }
+        if (canvas == null)
+        {
+            Debug.Log("ERROR: No story canvas");
+        }
         RemoveChildren();
-        StartStory();
+        story = new Story(inkJSONAsset.text);
     }
 
-    void StartStory()
+    public bool CanContinue()
+    {
+        return story.canContinue;
+    }
+
+    public void LoadStory()
     {
         story = new Story(inkJSONAsset.text);
-        story.BindExternalFunction("place_char", (string name, int location, bool speaker) =>
-         {
-             cm.PlaceChar(name, location);
-             if (speaker)
-             {
-                 currentSpeaker = name;
-             }
-         });
+        var obj = FindObjectsOfType<Canvas>();
+        for (int i = 0; i < obj.Length; ++i)
+        {
+            if (obj[i].name == "Story")
+            {
+                canvas = obj[i];
+                break;
+            }
+        }
+        if (canvas == null)
+        {
+            Debug.Log("ERROR: No story canvas");
+        }
         string progress = gs.loadStory();
         if (progress != null)
         {
+            Debug.Log("Loaded Save State");
             story.state.LoadJson(progress);
+            Debug.Log(progress);
+            RemoveChildren();
+            RefreshView();
         }
-        RefreshView();
     }
 
     public void RefreshView()
     {
         if (result)
         {
-            battle = result; 
+            battle = result;
         }
         else if (story.canContinue)
         {
+            Debug.Log("Continue");
             RemoveChildren();
             string text = story.Continue();
             text.Trim();
@@ -82,6 +108,12 @@ public class InkStory : MonoBehaviour {
                 }
             }
             result = parseFunctions();
+        }
+        else
+        {
+            RemoveChildren();
+            Debug.Log("STORY THREAD END");
+            gm.ContinueTraveling();//resume traveling
         }
     }
 
@@ -116,7 +148,7 @@ public class InkStory : MonoBehaviour {
         RefreshView();
     }
 
-    void RemoveChildren()
+    public void RemoveChildren()
     {
         int childCount = canvas.transform.childCount;
         for (int i = childCount - 1; i >= 0; --i)
@@ -130,14 +162,15 @@ public class InkStory : MonoBehaviour {
         for (int i = 0; i < story.currentTags.Count; ++i)
         {
             string[] tag = story.currentTags[i].Split('=');
-            if (tag[0] == "function")
+            if (tag[0].Contains("startBattle"))
             {
-                if (tag[1].Contains("startBattle"))
-                {
-                    string[] parameters = tag[1].Split('(')[1].Split(',');
-                    StartCoroutine(startBattle(parameters[0], int.Parse(parameters[1])));
-                    return true;
-                }
+                string[] parameters = tag[1].Split(',');
+                StartCoroutine(startBattle(parameters[0], int.Parse(parameters[1])));
+                return true;
+            }
+            else if (tag[0].Contains("Speaker"))
+            {
+
             }
         }
         return false;
@@ -155,5 +188,11 @@ public class InkStory : MonoBehaviour {
         Debug.Log("FIGHT");
         gs.saveStory(story.state.ToJson());
         sm.loadScene(sceneName);
+    }
+
+    public void RunEvent(string eventName)
+    {
+        story.ChoosePathString(eventName);
+        RefreshView();
     }
 }

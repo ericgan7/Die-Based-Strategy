@@ -4,8 +4,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameSceneManager : Singleton<GameSceneManager> {
-
+    private GameEventManager ge;
+    private InkStory story;
     private float loadProgress;
+
+    void Start()
+    {
+        ge = FindObjectOfType<GameEventManager>();
+        story = FindObjectOfType<InkStory>();
+    }
     public float LoadingPorgress
     {
         get { return loadProgress; }
